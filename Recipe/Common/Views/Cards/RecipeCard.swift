@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct RecipeCard: View {
+    @State private var isFavorite: Bool = false
+    @State private var animationAmount: CGFloat = 1
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -23,7 +26,7 @@ struct RecipeCard: View {
             }
             .padding(.bottom, 10)
 
-            ZStack {
+            ZStack(alignment: .topTrailing) {
                 Image("pancake")
                     .resizable()
                     .scaledToFill()
@@ -31,8 +34,22 @@ struct RecipeCard: View {
                     .cornerRadius(20)
                     .padding(.bottom, 10)
 
-                RoundedRectangle(cornerRadius: 8)
-                    .frame(width: 35, height: 35)
+                GlassMorphicButton(iconName: isFavorite ? "heart.fill" : "heart", size: 50)
+                    .padding([.top, .trailing], 10)
+                    .scaleEffect(animationAmount)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.5), value: 2)
+                    .onTapGesture {
+                        animationAmount = 1.3
+
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            isFavorite.toggle()
+                        }
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            animationAmount = 1
+                        }
+
+                    }
             }
 
             Text("Pancake")
