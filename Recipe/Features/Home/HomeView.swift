@@ -57,7 +57,7 @@ struct HomeView: View {
                     .padding(.top)
 
                 if selectedTab == 0 {
-                    LeftTabContent()
+                    RecipeContent()
                 } else {
 
                     RightTabContent()
@@ -70,9 +70,9 @@ struct HomeView: View {
     }
 }
 
-struct LeftTabContent: View {
+struct RecipeContent: View {
     var body: some View {
-        Text("Hello, world!")
+        RecipeCard()
     }
 }
 
@@ -84,7 +84,7 @@ struct RightTabContent: View {
 
 struct TabSelector: View {
     @Binding var selectedTab: Int
-    let tabs = ["Left", "Right"]
+    let tabs = ["Recipes", "Favorites"]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

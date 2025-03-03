@@ -8,36 +8,65 @@
 import SwiftUI
 
 struct RecipeCard: View {
+    let authorName: String
+    let authorImage: String
+    let recipeImage: String
+    let recipeName: String
+    let category: String
+    let cookingTime: String
+
     @State private var isFavorite: Bool = false
     @State private var animationAmount: CGFloat = 1
+
+    var imageSize: CGFloat = 150
+
+    init(
+        authorName: String = "Ram Krishna",
+        authorImage: String = "potrait",
+        recipeImage: String = "pancake",
+        recipeName: String = "Pancake",
+        category: String = "Food",
+        cookingTime: String = "20 mins",
+        imageSize: CGFloat = 150,
+        isFavorite: Bool = false
+    ) {
+        self.authorName = authorName
+        self.authorImage = authorImage
+        self.recipeImage = recipeImage
+        self.recipeName = recipeName
+        self.category = category
+        self.cookingTime = cookingTime
+        self.imageSize = imageSize
+        self._isFavorite = State(initialValue: isFavorite)
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Image("potrait")
+                Image(authorImage)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 50, height: 50)
+                    .frame(width: 40, height: 40)
                     .clipShape(.circle)
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 5)
 
-                Text("Ram Krishna")
+                Text(authorName)
                     .font(.caption)
             }
-            .padding(.bottom, 10)
+            .padding(.bottom, 5)
 
             ZStack(alignment: .topTrailing) {
-                Image("pancake")
+                Image(recipeImage)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 200, height: 200)
-                    .cornerRadius(20)
-                    .padding(.bottom, 10)
+                    .frame(width: imageSize, height: imageSize)
+                    .cornerRadius(15)
+                    .padding(.bottom, 5)
 
-                GlassMorphicButton(iconName: isFavorite ? "heart.fill" : "heart", size: 50)
-                    .padding([.top, .trailing], 10)
+                GlassMorphicButton(iconName: isFavorite ? "heart.fill" : "heart", size: 40)
+                    .padding([.top, .trailing], 5)
                     .scaleEffect(animationAmount)
-                    .animation(.spring(response: 0.3, dampingFraction: 0.5), value: 2)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.5), value: animationAmount)
                     .onTapGesture {
                         animationAmount = 1.3
 
@@ -48,18 +77,17 @@ struct RecipeCard: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                             animationAmount = 1
                         }
-
                     }
             }
 
-            Text("Pancake")
-                .font(.custom("Inter", size: 18))
+            Text(recipeName)
+                .font(.custom("Inter", size: 16))
                 .fontWeight(.semibold)
                 .foregroundStyle(Color.appMain)
-                .padding(.bottom, 5)
+                .padding(.bottom, 2)
 
             HStack {
-                Text("Food")
+                Text(category)
                     .font(.caption)
                     .foregroundStyle(Color.appSecondary)
 
@@ -67,13 +95,16 @@ struct RecipeCard: View {
                     .font(.caption)
                     .foregroundStyle(Color.appSecondary)
 
-                Text("20 mins")
+                Text(cookingTime)
                     .font(.caption)
                     .foregroundStyle(Color.appSecondary)
             }
-
-
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(10)
+        .background(Color.white)
+        .cornerRadius(10)
+        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
 }
 
