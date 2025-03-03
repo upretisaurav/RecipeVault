@@ -23,7 +23,9 @@ struct HomeView: View {
         VStack {
             TextField(AppStrings.Home.search, text: $search)
                 .padding()
+                .disabled(true)
                 .background(
+                    
                     RoundedRectangle(cornerRadius: 50)
                         .fill(Color.appGrey)
                 )
