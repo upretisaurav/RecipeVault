@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var search: String = ""
     @State private var selectedCategory: RecipeCategory = .all
     @State private var selectedTab: Int = 0
+    @State private var navigationPath = [String]()
 
     private var gridItemWidth: CGFloat {
         let screenWidth = UIScreen.main.bounds.width
@@ -20,62 +20,78 @@ struct HomeView: View {
     }
 
     var body: some View {
-        VStack {
-            TextField(AppStrings.Home.search, text: $search)
-                .padding()
-                .disabled(true)
-                .background(
-                    
-                    RoundedRectangle(cornerRadius: 50)
-                        .fill(Color.appGrey)
-                )
+        NavigationStack(path: $navigationPath) {
+
+            VStack {
+                Button(action: {
+                    navigationPath.append("search")
+                }) {
+                    HStack {
+                        Text(AppStrings.Home.search)
+                            .foregroundColor(.gray)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 50)
+                            .fill(Color.appGrey)
+                    )
+                    .frame(maxWidth: .infinity)
+                }
                 .padding([.top, .bottom], 24)
 
-            Text(AppStrings.Home.category)
-                .font(.titleSmall)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 10)
+                Text(AppStrings.Home.category)
+                    .font(.titleSmall)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 10)
 
-            ScrollView(
-                .horizontal, showsIndicators: false,
-                content: {
-                    HStack {
-                        ForEach(RecipeCategory.allCases) { category in
-                            CategoryButton(
-                                buttonText: category.rawValue,
-                                isSelected: selectedCategory == category,
-                                buttonAction: {
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        selectedCategory = category
-                                    }
-                                })
+                ScrollView(
+                    .horizontal, showsIndicators: false,
+                    content: {
+                        HStack {
+                            ForEach(RecipeCategory.allCases) { category in
+                                CategoryButton(
+                                    buttonText: category.rawValue,
+                                    isSelected: selectedCategory == category,
+                                    buttonAction: {
+                                        withAnimation(.easeInOut(duration: 0.2))
+                                        {
+                                            selectedCategory = category
+                                        }
+                                    })
 
+                            }
                         }
                     }
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Rectangle()
+                    .foregroundStyle(Color.appGrey)
+                    .frame(height: 10)
+                    .padding(.horizontal, -20)
+
+                VStack(spacing: 0) {
+                    TabSelector(selectedTab: $selectedTab)
+                        .padding(.top)
+
+                    if selectedTab == 0 {
+                        RecipeContent(itemGridWidth: gridItemWidth)
+                    } else {
+
+                        FavoriteContent()
+                    }
                 }
-            )
-            .frame(maxWidth: .infinity, alignment: .leading)
 
-            Rectangle()
-                .foregroundStyle(Color.appGrey)
-                .frame(height: 10)
-                .padding(.horizontal, -20)
-
-            VStack(spacing: 0) {
-                TabSelector(selectedTab: $selectedTab)
-                    .padding(.top)
-
-                if selectedTab == 0 {
-                    RecipeContent(itemGridWidth: gridItemWidth)
-                } else {
-
-                    FavoriteContent()
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            .navigationDestination(for: String.self) { route in
+                if route == "search" {
+                    SearchView()
                 }
             }
-
-            Spacer()
         }
-        .padding(.horizontal, 20)
     }
 }
 
