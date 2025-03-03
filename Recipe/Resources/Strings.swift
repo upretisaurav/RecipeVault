@@ -38,5 +38,12 @@ struct AppStrings {
         static let sentTheCodeToYourEmail: String = "We've sent the code to your email"
     }
 
+    struct Home {
+        static let search: String = "Search"
+        static let category: String = "Category"
+        static let noFavYet: String = "No favorites yet"
+        static let addFavByTappingHeartIcon: String = "Add recipes to your favorites by tapping the heart icon"
+    }
+
 
 }

@@ -12,9 +12,16 @@ struct HomeView: View {
     @State private var selectedCategory: RecipeCategory = .all
     @State private var selectedTab: Int = 0
 
+    private var gridItemWidth: CGFloat {
+        let screenWidth = UIScreen.main.bounds.width
+        let padding: CGFloat = 40
+        let spacing: CGFloat = 15
+        return (screenWidth - padding - spacing) / 2
+    }
+
     var body: some View {
         VStack {
-            TextField("Search", text: $search)
+            TextField(AppStrings.Home.search, text: $search)
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 50)
@@ -22,7 +29,7 @@ struct HomeView: View {
                 )
                 .padding([.top, .bottom], 24)
 
-            Text("Category")
+            Text(AppStrings.Home.category)
                 .font(.titleSmall)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 10)
@@ -57,10 +64,10 @@ struct HomeView: View {
                     .padding(.top)
 
                 if selectedTab == 0 {
-                    RecipeContent()
+                    RecipeContent(itemGridWidth: gridItemWidth)
                 } else {
 
-                    RightTabContent()
+                    FavoriteContent()
                 }
             }
 
@@ -71,14 +78,40 @@ struct HomeView: View {
 }
 
 struct RecipeContent: View {
+    let itemGridWidth: CGFloat
+    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+
     var body: some View {
-        RecipeCard()
+        ScrollView {
+            LazyVGrid(columns: columns) {
+                ForEach(0...6, id: \.self) { index in
+                    RecipeCard(imageSize: itemGridWidth - 20)
+                }
+            }
+        }
     }
 }
 
-struct RightTabContent: View {
+struct FavoriteContent: View {
     var body: some View {
-        Text("Hello, world!")
+        VStack {
+            Image(systemName: "heart.slash")
+                .font(.system(size: 50))
+                .foregroundColor(.gray)
+                .padding()
+
+            Text(AppStrings.Home.noFavYet)
+                .font(.headline)
+                .foregroundColor(.gray)
+
+            Text(AppStrings.Home.addFavByTappingHeartIcon)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+                .padding()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.top, 50)
     }
 }
 
