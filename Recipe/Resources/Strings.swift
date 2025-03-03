@@ -45,5 +45,15 @@ struct AppStrings {
         static let addFavByTappingHeartIcon: String = "Add recipes to your favorites by tapping the heart icon"
     }
 
+    struct Search {
+        static let calumLewis: String =  "Calum Lewis"
+        static let salad: String = "Salad"
+        static let searchSuggetions: String = "Search Suggestions"
+        static let sushi: String =  "sushi"
+        static let sandwich: String = "sandwich"
+        static let seafood: String = "seafood"
+        static let friedRice: String = "fried rice"
+    }
+
 
 }

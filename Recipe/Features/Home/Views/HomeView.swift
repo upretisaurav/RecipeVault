@@ -88,7 +88,7 @@ struct HomeView: View {
             .padding(.horizontal, 20)
             .navigationDestination(for: String.self) { route in
                 if route == "search" {
-                    SearchView()
+                    SearchView(navigationPath: $navigationPath)
                 }
             }
         }
