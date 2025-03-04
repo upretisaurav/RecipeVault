@@ -9,8 +9,11 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var selectedCategory: RecipeCategory = .all
+    @State private var filterCategory: RecipeCategory = .all
+    @State private var sliderValue: Double = 30
     @State private var selectedTab: Int = 0
     @State private var navigationPath = [String]()
+    @State private var showingSheet = false
 
     private var gridItemWidth: CGFloat {
         let screenWidth = UIScreen.main.bounds.width
@@ -23,22 +26,48 @@ struct HomeView: View {
         NavigationStack(path: $navigationPath) {
 
             VStack {
-                Button(action: {
-                    navigationPath.append("search")
-                }) {
-                    HStack {
-                        Text(AppStrings.Home.search)
-                            .foregroundColor(.gray)
-                        Spacer()
+                HStack {
+                    Button(action: {
+                        navigationPath.append("search")
+                    }) {
+                        HStack {
+                            Text(AppStrings.Home.search)
+                                .foregroundColor(.gray)
+                            Spacer()
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 50)
+                                .fill(Color.appGrey)
+                        )
+                        .frame(maxWidth: .infinity)
                     }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 50)
-                            .fill(Color.appGrey)
+                    .padding([.top, .bottom], 24)
+
+                    Button(
+                        action: {
+                            showingSheet = true
+                        },
+                        label: {
+                            Image(systemName: "line.3.horizontal.decrease")
+                                .foregroundStyle(Color.appSecondary)
+                        }
                     )
-                    .frame(maxWidth: .infinity)
+                    .sheet(isPresented: $showingSheet) {
+                        FilterSheet(
+                            isPresented: $showingSheet,
+                            title: AppStrings.Home.addAFilter,
+                            onDone: {
+                                showingSheet = false
+                            },
+                            onCancel: {
+                                showingSheet = false
+                            }
+                        ) {
+                            filterSheetContent
+                        }
+                    }
                 }
-                .padding([.top, .bottom], 24)
 
                 Text(AppStrings.Home.category)
                     .font(.titleSmall)
@@ -93,6 +122,74 @@ struct HomeView: View {
             }
         }
     }
+
+    private var filterSheetContent: some View {
+        VStack {
+            Text(AppStrings.Home.category)
+                .font(.titleSmall)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 10)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(RecipeCategory.allCases) { category in
+                        CategoryButton(
+                            buttonText: category.rawValue,
+                            isSelected: filterCategory == category,
+                            buttonAction: {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    filterCategory = category
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+            .padding(.bottom, 10)
+
+            HStack {
+                Text(AppStrings.Home.cookingDuration)
+                    .font(.titleSmall)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.appMain)
+
+                Text(AppStrings.Home.inMinutes)
+                    .font(.titleSmall)
+                    .fontWeight(.regular)
+                    .foregroundStyle(Color.appSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, 20)
+
+            HStack {
+                Text("<10")
+                    .foregroundStyle(
+                        sliderValue < 15 ? Color.appGreen : Color.appSecondary
+                    )
+                    .fontWeight(.semibold)
+                Spacer()
+                Text("30")
+                    .foregroundStyle(
+                        sliderValue > 15 && sliderValue < 45
+                            ? Color.appGreen : Color.appSecondary
+                    )
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(">60")
+                    .foregroundStyle(
+                        sliderValue > 45 ? Color.appGreen : Color.appSecondary
+                    )
+                    .fontWeight(.semibold)
+            }
+
+            Slider(value: $sliderValue, in: 0...60, step: 1)
+                .tint(Color.appGreen)
+                .padding(.horizontal)
+                .padding(.bottom, 20)
+        }
+    }
+
 }
 
 struct RecipeContent: View {

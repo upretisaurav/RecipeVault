@@ -10,6 +10,10 @@ import SwiftUI
 struct SearchView: View {
     @State private var search: String = ""
     @Binding var navigationPath: [String]
+    @State private var showingSheet = false
+
+    @State private var filterCategory: RecipeCategory = .all
+    @State private var sliderValue: Double = 30
 
     var body: some View {
         VStack {
@@ -46,11 +50,29 @@ struct SearchView: View {
                 }
 
                 Button(
-                    action: {},
+                    action: {
+                        showingSheet = true
+                    },
                     label: {
                         Image(systemName: "line.3.horizontal.decrease")
                             .foregroundStyle(Color.appSecondary)
-                    })
+                    }
+                )
+                .sheet(isPresented: $showingSheet) {
+                    FilterSheet(
+                        isPresented: $showingSheet,
+                        title: AppStrings.Home.addAFilter,
+                        onDone: {
+                            showingSheet = false
+
+                        },
+                        onCancel: {
+                            showingSheet = false
+                        }
+                    ) {
+                        filterSheetContent
+                    }
+                }
             }
 
             Rectangle()
@@ -95,6 +117,73 @@ struct SearchView: View {
         }
         .padding(.horizontal, 20)
         .navigationBarBackButtonHidden(true)
+    }
+
+    private var filterSheetContent: some View {
+        VStack {
+            Text(AppStrings.Home.category)
+                .font(.titleSmall)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 10)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(RecipeCategory.allCases) { category in
+                        CategoryButton(
+                            buttonText: category.rawValue,
+                            isSelected: filterCategory == category,
+                            buttonAction: {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    filterCategory = category
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+            .padding(.bottom, 10)
+
+            HStack {
+                Text(AppStrings.Home.cookingDuration)
+                    .font(.titleSmall)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.appMain)
+
+                Text(AppStrings.Home.inMinutes)
+                    .font(.titleSmall)
+                    .fontWeight(.regular)
+                    .foregroundStyle(Color.appSecondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, 20)
+
+            HStack {
+                Text("<10")
+                    .foregroundStyle(
+                        sliderValue < 15 ? Color.appGreen : Color.appSecondary
+                    )
+                    .fontWeight(.semibold)
+                Spacer()
+                Text("30")
+                    .foregroundStyle(
+                        sliderValue > 15 && sliderValue < 45
+                            ? Color.appGreen : Color.appSecondary
+                    )
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(">60")
+                    .foregroundStyle(
+                        sliderValue > 45 ? Color.appGreen : Color.appSecondary
+                    )
+                    .fontWeight(.semibold)
+            }
+
+            Slider(value: $sliderValue, in: 0...60, step: 1)
+                .tint(Color.appGreen)
+                .padding(.horizontal)
+                .padding(.bottom, 20)
+        }
     }
 }
 

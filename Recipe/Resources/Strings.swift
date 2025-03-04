@@ -43,6 +43,9 @@ struct AppStrings {
         static let category: String = "Category"
         static let noFavYet: String = "No favorites yet"
         static let addFavByTappingHeartIcon: String = "Add recipes to your favorites by tapping the heart icon"
+        static let addAFilter = "Add a Filter"
+        static let cookingDuration = "Cooking Duration"
+        static let inMinutes = "(in minutes)"
     }
 
     struct Search {
