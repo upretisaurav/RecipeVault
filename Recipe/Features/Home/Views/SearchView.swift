@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @State private var search: String = ""
-    @Binding var navigationPath: [String]
+    @Binding var navigationPath: [NavigationRoute]
     @State private var showingSheet = false
 
     @State private var filterCategory: RecipeCategory = .all
@@ -32,11 +32,11 @@ struct SearchView: View {
                     TextField(AppStrings.Home.search, text: $search)
                         .padding()
                         .background(
-                            RoundedRectangle(cornerRadius: 50)
+                            RoundedRectangle(cornerRadius: Constants.cornerRadius)
                                 .fill(Color.appGrey)
                         )
-                        .padding([.top, .bottom], 24)
-                        .padding(.trailing, 10)
+                        .padding([.top, .bottom], Constants.verticalPadding)
+                        .padding(.trailing, Constants.itemSmallBottomPadding)
 
                     if !search.isEmpty {
                         Button(action: {
@@ -77,8 +77,8 @@ struct SearchView: View {
 
             Rectangle()
                 .foregroundStyle(Color.appGrey)
-                .frame(height: 10)
-                .padding(.horizontal, -20)
+                .frame(height: Constants.rectangleSeperatorHeight)
+                .padding(.horizontal, -Constants.horizontalPadding)
 
             SearchHistoryItem(text: AppStrings.Search.calumLewis)
                 .padding()
@@ -88,8 +88,8 @@ struct SearchView: View {
 
             Rectangle()
                 .foregroundStyle(Color.appGrey)
-                .frame(height: 10)
-                .padding(.horizontal, -20)
+                .frame(height: Constants.rectangleSeperatorHeight)
+                .padding(.horizontal, -Constants.horizontalPadding)
 
             VStack(alignment: .leading) {
                 Text(AppStrings.Search.searchSuggetions)
@@ -115,7 +115,7 @@ struct SearchView: View {
 
             Spacer()
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, Constants.horizontalPadding)
         .navigationBarBackButtonHidden(true)
     }
 
@@ -125,7 +125,7 @@ struct SearchView: View {
                 .font(.titleSmall)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 10)
+                .padding(.bottom, Constants.itemSmallBottomPadding)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
@@ -134,7 +134,7 @@ struct SearchView: View {
                             buttonText: category.rawValue,
                             isSelected: filterCategory == category,
                             buttonAction: {
-                                withAnimation(.easeInOut(duration: 0.2)) {
+                                withAnimation(.easeInOut(duration: Constants.animationDuration)) {
                                     filterCategory = category
                                 }
                             }
@@ -142,7 +142,7 @@ struct SearchView: View {
                     }
                 }
             }
-            .padding(.bottom, 10)
+            .padding(.bottom, Constants.itemSmallBottomPadding)
 
             HStack {
                 Text(AppStrings.Home.cookingDuration)
@@ -156,7 +156,7 @@ struct SearchView: View {
                     .foregroundStyle(Color.appSecondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, 20)
+            .padding(.bottom, Constants.itemMediumBottomPadding)
 
             HStack {
                 Text("<10")
@@ -179,10 +179,10 @@ struct SearchView: View {
                     .fontWeight(.semibold)
             }
 
-            Slider(value: $sliderValue, in: 0...60, step: 1)
+            Slider(value: $sliderValue, in: Constants.sliderMinValue...Constants.sliderMaxValue, step: Constants.sliderStep)
                 .tint(Color.appGreen)
                 .padding(.horizontal)
-                .padding(.bottom, 20)
+                .padding(.bottom, Constants.itemMediumBottomPadding)
         }
     }
 }
@@ -216,7 +216,7 @@ struct SuggestionButton: View {
 
     var body: some View {
         Text(text)
-            .padding(.horizontal, 20)
+            .padding(.horizontal, Constants.horizontalPadding)
             .padding(.vertical, 10)
             .background(Capsule().fill(Color(.systemGray6)))
             .foregroundColor(.appSecondary)

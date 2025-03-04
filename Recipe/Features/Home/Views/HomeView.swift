@@ -12,14 +12,14 @@ struct HomeView: View {
     @State private var filterCategory: RecipeCategory = .all
     @State private var sliderValue: Double = 30
     @State private var selectedTab: Int = 0
-    @State private var navigationPath = [String]()
+    @State private var navigationPath = [NavigationRoute]()
     @State private var showingSheet = false
 
     private var gridItemWidth: CGFloat {
         let screenWidth = UIScreen.main.bounds.width
-        let padding: CGFloat = 40
-        let spacing: CGFloat = 15
-        return (screenWidth - padding - spacing) / 2
+        return
+            (screenWidth - Constants.gridItemPadding - Constants.gridItemSpacing)
+            / 2
     }
 
     var body: some View {
@@ -28,7 +28,7 @@ struct HomeView: View {
             VStack {
                 HStack {
                     Button(action: {
-                        navigationPath.append("search")
+                        navigationPath.append(.search)
                     }) {
                         HStack {
                             Text(AppStrings.Home.search)
@@ -37,12 +37,14 @@ struct HomeView: View {
                         }
                         .padding()
                         .background(
-                            RoundedRectangle(cornerRadius: 50)
-                                .fill(Color.appGrey)
+                            RoundedRectangle(
+                                cornerRadius: Constants.cornerRadius
+                            )
+                            .fill(Color.appGrey)
                         )
                         .frame(maxWidth: .infinity)
                     }
-                    .padding([.top, .bottom], 24)
+                    .padding([.top, .bottom], Constants.verticalPadding)
 
                     Button(
                         action: {
@@ -72,7 +74,7 @@ struct HomeView: View {
                 Text(AppStrings.Home.category)
                     .font(.titleSmall)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Constants.itemSmallBottomPadding)
 
                 ScrollView(
                     .horizontal, showsIndicators: false,
@@ -83,8 +85,11 @@ struct HomeView: View {
                                     buttonText: category.rawValue,
                                     isSelected: selectedCategory == category,
                                     buttonAction: {
-                                        withAnimation(.easeInOut(duration: 0.2))
-                                        {
+                                        withAnimation(
+                                            .easeInOut(
+                                                duration: Constants
+                                                    .animationDuration)
+                                        ) {
                                             selectedCategory = category
                                         }
                                     })
@@ -97,8 +102,8 @@ struct HomeView: View {
 
                 Rectangle()
                     .foregroundStyle(Color.appGrey)
-                    .frame(height: 10)
-                    .padding(.horizontal, -20)
+                    .frame(height: Constants.rectangleSeperatorHeight)
+                    .padding(.horizontal, -Constants.horizontalPadding)
 
                 VStack(spacing: 0) {
                     TabSelector(selectedTab: $selectedTab)
@@ -107,16 +112,16 @@ struct HomeView: View {
                     if selectedTab == 0 {
                         RecipeContent(itemGridWidth: gridItemWidth)
                     } else {
-
                         FavoriteContent()
                     }
                 }
 
                 Spacer()
             }
-            .padding(.horizontal, 20)
-            .navigationDestination(for: String.self) { route in
-                if route == "search" {
+            .padding(.horizontal, Constants.horizontalPadding)
+            .navigationDestination(for: NavigationRoute.self) { route in
+                switch route {
+                case .search:
                     SearchView(navigationPath: $navigationPath)
                 }
             }
@@ -129,7 +134,7 @@ struct HomeView: View {
                 .font(.titleSmall)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 10)
+                .padding(.bottom, Constants.itemSmallBottomPadding)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
@@ -138,7 +143,10 @@ struct HomeView: View {
                             buttonText: category.rawValue,
                             isSelected: filterCategory == category,
                             buttonAction: {
-                                withAnimation(.easeInOut(duration: 0.2)) {
+                                withAnimation(
+                                    .easeInOut(
+                                        duration: Constants.animationDuration)
+                                ) {
                                     filterCategory = category
                                 }
                             }
@@ -146,7 +154,7 @@ struct HomeView: View {
                     }
                 }
             }
-            .padding(.bottom, 10)
+            .padding(.bottom, Constants.itemSmallBottomPadding)
 
             HStack {
                 Text(AppStrings.Home.cookingDuration)
@@ -160,7 +168,7 @@ struct HomeView: View {
                     .foregroundStyle(Color.appSecondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, 20)
+            .padding(.bottom, Constants.itemMediumBottomPadding)
 
             HStack {
                 Text("<10")
@@ -183,10 +191,14 @@ struct HomeView: View {
                     .fontWeight(.semibold)
             }
 
-            Slider(value: $sliderValue, in: 0...60, step: 1)
-                .tint(Color.appGreen)
-                .padding(.horizontal)
-                .padding(.bottom, 20)
+            Slider(
+                value: $sliderValue,
+                in: Constants.sliderMinValue...Constants.sliderMaxValue,
+                step: Constants.sliderStep
+            )
+            .tint(Color.appGreen)
+            .padding(.horizontal)
+            .padding(.bottom, Constants.itemMediumBottomPadding)
         }
     }
 
@@ -200,7 +212,8 @@ struct RecipeContent: View {
         ScrollView {
             LazyVGrid(columns: columns) {
                 ForEach(0...6, id: \.self) { index in
-                    RecipeCard(imageSize: itemGridWidth - 20)
+                    RecipeCard(
+                        imageSize: itemGridWidth - Constants.horizontalPadding)
                 }
             }
         }
@@ -239,7 +252,9 @@ struct TabSelector: View {
             HStack(spacing: 0) {
                 ForEach(0..<tabs.count, id: \.self) { index in
                     Button(action: {
-                        withAnimation(.easeInOut(duration: 0.3)) {
+                        withAnimation(
+                            .easeInOut(duration: Constants.tabAnimationDuration)
+                        ) {
                             selectedTab = index
                         }
                     }) {
@@ -251,12 +266,15 @@ struct TabSelector: View {
                                 selectedTab == index ? .primary : .gray
                             )
                             .frame(maxWidth: .infinity)
-                            .padding(.bottom, 20)
+                            .padding(.bottom, Constants.itemMediumBottomPadding)
                             .overlay(
                                 Rectangle()
                                     .fill(Color.green)
-                                    .frame(width: 60, height: 3)
-                                    .offset(y: 4)
+                                    .frame(
+                                        width: Constants.tabIndicatorWidth,
+                                        height: Constants.tabIndicatorHeight
+                                    )
+                                    .offset(y: Constants.tabIndicatorOffset)
                                     .opacity(selectedTab == index ? 1 : 0)
                             )
                     }
