@@ -58,5 +58,16 @@ struct AppStrings {
         static let friedRice: String = "fried rice"
     }
 
+    struct Upload {
+        static let cancel: String = "Cancel"
+        static let addCoverPhoto: String = "Add Cover Photo"
+        static let uptoTwelveMb: String = "(up to 12 Mb)"
+        static let foodName: String = "Food Name"
+        static let enterFoodName: String = "Enter food name"
+        static let description: String = "Description"
+        static let enterDescription: String = "Enter description"
+        static let tellALittleAboutFood: String = "Tell a little about food"
+    }
+
 
 }

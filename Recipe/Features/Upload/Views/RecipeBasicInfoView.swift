@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UploadView: View {
     @State private var foodName: String = ""
+    @State private var description: String = ""
     @State private var sliderValue: Double = 30
 
     var body: some View {
@@ -31,7 +32,6 @@ struct UploadView: View {
                     }
                 })
                 .padding(.bottom, Constants.itemMediumBottomPadding)
-
 
             ZStack {
                 DottedRoundedRectangle()
@@ -60,37 +60,18 @@ struct UploadView: View {
             }
             .padding(.bottom, Constants.itemMediumBottomPadding)
 
-            Text("Food Name")
-                .fontWeight(.semibold)
-                .foregroundStyle(Color.appMain)
-                .padding(.bottom, Constants.itemSmallBottomPadding)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            RecipeFormReusableTextField(
+                text: $foodName, label: AppStrings.Upload.foodName,
+                placeholder: AppStrings.Upload.enterFoodName)
 
-            TextField("Enter food name", text: $foodName)
-                .padding()
-                .overlay {
-                    RoundedRectangle(cornerRadius: 40)
-                        .stroke(Color.appSecondary, lineWidth: 1)
-                }
-                .padding(.bottom, Constants.itemMediumBottomPadding)
-
-            Text("Description")
-                .fontWeight(.semibold)
-                .foregroundStyle(Color.appMain)
-                .padding(.bottom, Constants.itemSmallBottomPadding)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            TextField("Enter description", text: $foodName)
-                .padding([.vertical, .horizontal], 30)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 15)
-                        .stroke(Color.appSecondary, lineWidth: 1)
-                }
-                .padding(.bottom, Constants.itemMediumBottomPadding)
+            RecipeFormReusableTextField(
+                text: $description, label: AppStrings.Upload.description,
+                placeholder: AppStrings.Upload.enterDescription, isMultiline: true)
 
             SliderWithLabels(sliderValue: $sliderValue)
 
-            AppButton(title: "Next", backgroundColor: Color.appGreen, action: {})
+            AppButton(
+                title: "Next", backgroundColor: Color.appGreen, action: {})
 
             Spacer()
 

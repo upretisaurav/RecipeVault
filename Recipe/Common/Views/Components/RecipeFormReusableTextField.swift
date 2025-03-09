@@ -12,13 +12,16 @@ struct RecipeFormReusableTextField: View {
     var label: String
     var placeholder: String
     var isMultiline: Bool = false
+    var containsLabel: Bool = true
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text(label)
-                .fontWeight(.semibold)
-                .foregroundStyle(Color.appMain)
-                .padding(.bottom, Constants.itemSmallBottomPadding)
+            if containsLabel {
+                Text(label)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color.appMain)
+                    .padding(.bottom, Constants.itemSmallBottomPadding)
+            }
 
             if isMultiline {
                 TextField(placeholder, text: $text, axis: .vertical)
@@ -36,7 +39,7 @@ struct RecipeFormReusableTextField: View {
                     }
             }
         }
-        .padding(.bottom, Constants.itemMediumBottomPadding)
+        .padding(.bottom, containsLabel ? Constants.itemMediumBottomPadding : Constants.itemSmallBottomPadding)
     }
 }
 
