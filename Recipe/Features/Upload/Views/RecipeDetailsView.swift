@@ -32,7 +32,7 @@ struct RecipeDetailsView: View {
                 })
                 .padding(.bottom, Constants.itemMediumBottomPadding)
 
-            Text("Ingredients")
+            Text(AppStrings.Upload.ingredients)
                 .fontWeight(.semibold)
                 .foregroundStyle(Color.appMain)
                 .padding(.bottom, Constants.itemSmallBottomPadding)
@@ -44,7 +44,7 @@ struct RecipeDetailsView: View {
 
                     RecipeFormReusableTextField(
                         text: $ingredientsFields[index], label: "",
-                        placeholder: "Enter ingredient", containsLabel: false)
+                        placeholder: AppStrings.Upload.enterIngredients, containsLabel: false)
                 }
             }
 
@@ -53,7 +53,7 @@ struct RecipeDetailsView: View {
                     ingredientsFields.append("")
                 },
                 label: {
-                    Text("+ Ingredient")
+                    Text(AppStrings.Upload.addIngredients)
                         .foregroundStyle(Color.appMain)
                 }
             )
@@ -71,7 +71,7 @@ struct RecipeDetailsView: View {
                 .padding(.horizontal, -Constants.horizontalPadding)
                 .padding(.bottom, Constants.itemMediumBottomPadding)
 
-            Text("Steps")
+            Text(AppStrings.Upload.steps)
                 .fontWeight(.semibold)
                 .foregroundStyle(Color.appMain)
                 .padding(.bottom, Constants.itemMediumBottomPadding)
@@ -120,13 +120,13 @@ struct RecipeDetailsView: View {
 
             HStack {
                 AppButton(
-                    title: "Back", backgroundColor: Color.appSecondary,
+                    title: AppStrings.Common.done, backgroundColor: Color.appSecondary,
                     action: {}
                 )
                 .padding(.trailing, Constants.itemSmallBottomPadding)
 
                 AppButton(
-                    title: "Next", backgroundColor: Color.appGreen, action: {})
+                    title: AppStrings.Common.next, backgroundColor: Color.appGreen, action: {})
             }
 
             Spacer()

@@ -6,6 +6,10 @@
 //
 
 struct AppStrings {
+    struct Common {
+        static let next: String = "Next"
+        static let done: String = "Done"
+    }
     struct Onboarding {
         static let title: String = "Start Cooking"
         static let subTitle: String = "Let's join our community \n to cook better food!"
@@ -67,6 +71,10 @@ struct AppStrings {
         static let description: String = "Description"
         static let enterDescription: String = "Enter description"
         static let tellALittleAboutFood: String = "Tell a little about food"
+        static let ingredients: String = "Ingredients"
+        static let enterIngredients: String = "Enter ingredient"
+        static let addIngredients: String = "+ Ingredient"
+        static let steps: String = "Steps"
     }
 
 
