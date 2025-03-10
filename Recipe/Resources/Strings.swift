@@ -80,5 +80,11 @@ struct AppStrings {
         static let backToHome: String = "Back to Home"
     }
 
+    struct BottomSheetContent {
+        static let chooseOption: String = "Choose one option"
+        static let food: String = "Food"
+        static let Ingredient: String = "Ingredient"
+    }
+
 
 }

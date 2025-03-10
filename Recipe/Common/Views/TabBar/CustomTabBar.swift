@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CustomTabBar: View {
     @Binding var selectedTab: Int
+    @State private var showingSheet: Bool = false
 
     var body: some View {
         HStack(spacing: 0) {
@@ -21,7 +22,11 @@ struct CustomTabBar: View {
             }
 
             ScanButton {
-                print("Scan button tapped")
+                showingSheet = true
+            }
+            .sheet(isPresented: $showingSheet) {
+                BottomSheetView(showingCard: $showingSheet)
+                    .presentationDetents([.fraction(0.4)])
             }
 
             TabBarButton(imageName: "bell.fill", title: "Notification", isSelected: selectedTab == 3) {
@@ -42,4 +47,3 @@ struct CustomTabBar: View {
         )
     }
 }
-
