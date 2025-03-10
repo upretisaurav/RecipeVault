@@ -75,6 +75,9 @@ struct AppStrings {
         static let enterIngredients: String = "Enter ingredient"
         static let addIngredients: String = "+ Ingredient"
         static let steps: String = "Steps"
+        static let uploadSuccess: String = "Upload Success"
+        static let yourRecipeHasBeenUploaded: String = "Your recipe has been uploaded, you can see it on your profile."
+        static let backToHome: String = "Back to Home"
     }
 
 
