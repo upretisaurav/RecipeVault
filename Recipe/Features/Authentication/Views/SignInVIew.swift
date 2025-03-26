@@ -12,6 +12,8 @@ struct SignInVIew: View {
     @State private var password: String = ""
     @State private var shouldValidateEmail: Bool = false
     @State private var shouldValidatePassword: Bool = false
+    @State private var navigateToSignUp: Bool = false
+    @State private var navigateToForgotPassword: Bool = false
 
     var body: some View {
         VStack {
@@ -36,6 +38,7 @@ struct SignInVIew: View {
 
             Text(AppStrings.Authentication.forgotPassword)
                 .onTapGesture {
+                    navigateToForgotPassword = true
                     print("Navigation forgot")
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -62,6 +65,7 @@ struct SignInVIew: View {
                 Text(AppStrings.Authentication.doNotHaveAccount)
                 Text(AppStrings.Authentication.signUp)
                     .onTapGesture {
+                        navigateToSignUp = true
                         print("Navigation signup")
                     }
                     .foregroundStyle(Color.appGreen)
@@ -69,6 +73,12 @@ struct SignInVIew: View {
             .padding()
         }
         .padding([.horizontal], 20)
+        .navigationDestination(isPresented: $navigateToSignUp, destination: {
+            SignUpView()
+        })
+        .navigationDestination(isPresented: $navigateToForgotPassword, destination: {
+            ResetYourPassword()
+        })
     }
 
     private func validateAndLogin() {
