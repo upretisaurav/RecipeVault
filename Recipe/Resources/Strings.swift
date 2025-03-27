@@ -40,6 +40,8 @@ struct AppStrings {
         static let codeExpiresIn: String = "code expires in: "
         static let checkYourEmail: String = "Check your email"
         static let sentTheCodeToYourEmail: String = "We've sent the code to your email"
+        static let accountCreated: String = "Account created!"
+        static let goBack: String = "Go Back"
     }
 
     struct Home {

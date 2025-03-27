@@ -25,19 +25,19 @@ struct SignInVIew: View {
                     .foregroundStyle(Color.appSecondary)
 
                 Spacer()
-                    .frame(height: 40)
+                    .frame(height: Constants.itemMediumBottomPadding * 2)
 
                 EmailTextField(
                     email: $viewModel.email,
                     shouldValidate: $viewModel.shouldValidateEmail
                 )
-                .padding(.bottom, 10)
+                .padding(.bottom, Constants.itemSmallBottomPadding)
 
                 PasswordTextField(
                     password: $viewModel.password,
                     shouldValidate: $viewModel.shouldValidatePassword
                 )
-                .padding(.bottom, 10)
+                .padding(.bottom, Constants.itemSmallBottomPadding)
 
                 Text(AppStrings.Authentication.forgotPassword)
                     .onTapGesture {
@@ -45,7 +45,7 @@ struct SignInVIew: View {
                         print("Navigation forgot")
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Constants.itemSmallBottomPadding)
 
                 Text(viewModel.errorMessage?.message ?? "")
                     .foregroundStyle(Color.cherryRed)
@@ -84,7 +84,7 @@ struct SignInVIew: View {
             }
         }
         .scrollIndicators(ScrollIndicatorVisibility.hidden)
-        .padding([.horizontal], 20)
+        .padding([.horizontal], Constants.horizontalPadding)
         .navigationDestination(
             isPresented: $navigateToSignUp,
             destination: {
