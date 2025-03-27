@@ -12,7 +12,6 @@ struct HomeView: View {
     @State private var filterCategory: RecipeCategory = .all
     @State private var sliderValue: Double = 30
     @State private var selectedTab: Int = 0
-    @State private var navigationPath = [NavigationRoute]()
     @State private var showingSheet = false
 
     private var gridItemWidth: CGFloat {
@@ -23,109 +22,100 @@ struct HomeView: View {
     }
 
     var body: some View {
-        NavigationStack(path: $navigationPath) {
 
-            VStack {
-                HStack {
-                    Button(action: {
-                        navigationPath.append(.search)
-                    }) {
-                        HStack {
-                            Text(AppStrings.Home.search)
-                                .foregroundColor(.gray)
-                            Spacer()
-                        }
-                        .padding()
-                        .background(
-                            RoundedRectangle(
-                                cornerRadius: Constants.cornerRadius
-                            )
-                            .fill(Color.appGrey)
+        VStack {
+            HStack {
+                Button(action: {
+                }) {
+                    HStack {
+                        Text(AppStrings.Home.search)
+                            .foregroundColor(.gray)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(
+                            cornerRadius: Constants.cornerRadius
                         )
-                        .frame(maxWidth: .infinity)
-                    }
-                    .padding([.top, .bottom], Constants.verticalPadding)
-
-                    Button(
-                        action: {
-                            showingSheet = true
-                        },
-                        label: {
-                            Image(systemName: "line.3.horizontal.decrease")
-                                .foregroundStyle(Color.appSecondary)
-                        }
+                        .fill(Color.appGrey)
                     )
-                    .sheet(isPresented: $showingSheet) {
-                        FilterSheet(
-                            isPresented: $showingSheet,
-                            title: AppStrings.Home.addAFilter,
-                            onDone: {
-                                showingSheet = false
-                            },
-                            onCancel: {
-                                showingSheet = false
-                            }
-                        ) {
-                            filterSheetContent
-                        }
-                    }
+                    .frame(maxWidth: .infinity)
                 }
+                .padding([.top, .bottom], Constants.verticalPadding)
 
-                Text(AppStrings.Home.category)
-                    .font(.titleSmall)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, Constants.itemSmallBottomPadding)
-
-                ScrollView(
-                    .horizontal, showsIndicators: false,
-                    content: {
-                        HStack {
-                            ForEach(RecipeCategory.allCases) { category in
-                                CategoryButton(
-                                    buttonText: category.rawValue,
-                                    isSelected: selectedCategory == category,
-                                    buttonAction: {
-                                        withAnimation(
-                                            .easeInOut(
-                                                duration: Constants
-                                                    .animationDuration)
-                                        ) {
-                                            selectedCategory = category
-                                        }
-                                    })
-
-                            }
-                        }
+                Button(
+                    action: {
+                        showingSheet = true
+                    },
+                    label: {
+                        Image(systemName: "line.3.horizontal.decrease")
+                            .foregroundStyle(Color.appSecondary)
                     }
                 )
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                Rectangle()
-                    .foregroundStyle(Color.appGrey)
-                    .frame(height: Constants.rectangleSeperatorHeight)
-                    .padding(.horizontal, -Constants.horizontalPadding)
-
-                VStack(spacing: 0) {
-                    TabSelector(selectedTab: $selectedTab)
-                        .padding(.top)
-
-                    if selectedTab == 0 {
-                        RecipeContent(itemGridWidth: gridItemWidth)
-                    } else {
-                        FavoriteContent()
+                .sheet(isPresented: $showingSheet) {
+                    FilterSheet(
+                        isPresented: $showingSheet,
+                        title: AppStrings.Home.addAFilter,
+                        onDone: {
+                            showingSheet = false
+                        },
+                        onCancel: {
+                            showingSheet = false
+                        }
+                    ) {
+                        filterSheetContent
                     }
                 }
-
-                Spacer()
             }
-            .padding(.horizontal, Constants.horizontalPadding)
-            .navigationDestination(for: NavigationRoute.self) { route in
-                switch route {
-                case .search:
-                    SearchView(navigationPath: $navigationPath)
+
+            Text(AppStrings.Home.category)
+                .font(.titleSmall)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, Constants.itemSmallBottomPadding)
+
+            ScrollView(
+                .horizontal, showsIndicators: false,
+                content: {
+                    HStack {
+                        ForEach(RecipeCategory.allCases) { category in
+                            CategoryButton(
+                                buttonText: category.rawValue,
+                                isSelected: selectedCategory == category,
+                                buttonAction: {
+                                    withAnimation(
+                                        .easeInOut(
+                                            duration: Constants
+                                                .animationDuration)
+                                    ) {
+                                        selectedCategory = category
+                                    }
+                                })
+
+                        }
+                    }
+                }
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Rectangle()
+                .foregroundStyle(Color.appGrey)
+                .frame(height: Constants.rectangleSeperatorHeight)
+                .padding(.horizontal, -Constants.horizontalPadding)
+
+            VStack(spacing: 0) {
+                TabSelector(selectedTab: $selectedTab)
+                    .padding(.top)
+
+                if selectedTab == 0 {
+                    RecipeContent(itemGridWidth: gridItemWidth)
+                } else {
+                    FavoriteContent()
                 }
             }
+
+            Spacer()
         }
+        .padding(.horizontal, Constants.horizontalPadding)
     }
 
     private var filterSheetContent: some View {

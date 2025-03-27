@@ -43,7 +43,7 @@ struct OnboardingView: View {
                 Spacer()
             }
             .navigationDestination(isPresented: $navigateToSignIn, destination: {
-                SignInVIew()
+                SignInVIew(viewModel: SignInViewModel())
             })
         }
 
