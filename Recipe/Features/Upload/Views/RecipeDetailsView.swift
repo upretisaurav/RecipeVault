@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct RecipeDetailsView: View {
-    @State private var ingredientsFields: [String] = ["", ""]
-    @State private var foodDesc: String = ""
+    @ObservedObject var viewModel: UploadViewModel
     @State private var showDialog: Bool = false
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    let onSaveSuccess: UploadView.SaveSuccessAction
 
     var body: some View {
         NavigationStack {
@@ -20,7 +22,9 @@ struct RecipeDetailsView: View {
                         .toolbar(content: {
                             ToolbarItem(placement: .topBarLeading) {
                                 Button(
-                                    action: {},
+                                    action: {
+                                        dismiss()
+                                    },
                                     label: {
                                         Text(AppStrings.Upload.cancel)
                                             .fontWeight(.semibold)
@@ -41,12 +45,13 @@ struct RecipeDetailsView: View {
                         .padding(.bottom, Constants.itemSmallBottomPadding)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    ForEach(0..<ingredientsFields.count, id: \.self) { index in
+                    ForEach(0..<viewModel.ingredients.count, id: \.self) {
+                        index in
                         HStack {
                             DotGridView()
 
                             RecipeFormReusableTextField(
-                                text: $ingredientsFields[index], label: "",
+                                text: $viewModel.ingredients[index], label: "",
                                 placeholder: AppStrings.Upload.enterIngredients,
                                 containsLabel: false)
                         }
@@ -54,7 +59,7 @@ struct RecipeDetailsView: View {
 
                     Button(
                         action: {
-                            ingredientsFields.append("")
+                            viewModel.ingredients.append("")
                         },
                         label: {
                             Text(AppStrings.Upload.addIngredients)
@@ -76,7 +81,7 @@ struct RecipeDetailsView: View {
                         .padding(.horizontal, -Constants.horizontalPadding)
                         .padding(.bottom, Constants.itemMediumBottomPadding)
 
-                    Text(AppStrings.Upload.steps)
+                    Text(AppStrings.Upload.note)
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.appMain)
                         .padding(.bottom, Constants.itemMediumBottomPadding)
@@ -102,45 +107,27 @@ struct RecipeDetailsView: View {
 
                         VStack {
                             RecipeFormReusableTextField(
-                                text: $foodDesc, label: "",
+                                text: $viewModel.note, label: "",
                                 placeholder: AppStrings.Upload
                                     .tellALittleAboutFood,
                                 isMultiline: true, containsLabel: false)
-
-                            Button(
-                                action: {},
-                                label: {
-                                    Image(systemName: "camera")
-                                }
-                            )
-                            .padding()
-                            .foregroundStyle(Color.black)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color.appGrey)
-                            )
                         }
                     }
                     .padding(.bottom, Constants.itemMediumBottomPadding)
 
                     Spacer()
 
-                    HStack {
-                        AppButton(
-                            title: AppStrings.Common.done,
-                            backgroundColor: Color.appSecondary,
-                            action: {}
-                        )
-                        .padding(.trailing, Constants.itemSmallBottomPadding)
+                    AppButton(
+                        title: viewModel.isSaving
+                            ? "Saving..." : AppStrings.Common.done,
+                        backgroundColor: viewModel.isSaving
+                            ? Color.appSecondary : Color.appGreen,
+                        action: {
 
-                        AppButton(
-                            title: AppStrings.Common.next,
-                            backgroundColor: Color.appGreen,
-                            action: {
-                                showDialog = true
-                            })
-                    }
+                            viewModel.saveRecipe(modelContext: modelContext)
+                        }
+                    )
+                    .disabled(viewModel.isSaving)
                 }
                 .padding(.horizontal, Constants.horizontalPadding)
 
@@ -163,11 +150,33 @@ struct RecipeDetailsView: View {
 
             Spacer()
         }
+        .navigationBarBackButtonHidden(true)
+        .alert(
+            AppStrings.Upload.missingInformation,
+            isPresented: .constant(viewModel.validationError != nil),
+            presenting: viewModel.validationError,
+            actions: { _ in
+                Button("OK") {
+                    viewModel.validationError = nil
+                }
+            },
+            message: { error in
+                Text(error.localizedDescription)
+            }
+        )
+        .alert(
+            AppStrings.Upload.uploadSuccess,
+            isPresented: $viewModel.showSuccessAlert,
+            actions: {
+                Button(AppStrings.Upload.backToHome) {
+                    onSaveSuccess()
+                }
+            },
+            message: {
+                Text(AppStrings.Upload.yourRecipeHasBeenUploaded)
+            }
+        )
 
     }
 
-}
-
-#Preview {
-    RecipeDetailsView()
 }

@@ -14,7 +14,7 @@ struct RecipeApp: App {
 
     init() {
         do {
-            modelContainer = try ModelContainer(for: User.self)
+            modelContainer = try ModelContainer(for: User.self, Recipe.self)
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
