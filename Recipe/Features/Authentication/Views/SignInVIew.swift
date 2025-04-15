@@ -100,7 +100,7 @@ struct SignInVIew: View {
         .navigationDestination(
             isPresented: $viewModel.navigateToHome,
             destination: {
-                HomeView()
+                MainTabView()
             }
         )
         .onAppear {
