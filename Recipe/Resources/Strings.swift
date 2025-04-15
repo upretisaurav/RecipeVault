@@ -76,10 +76,14 @@ struct AppStrings {
         static let ingredients: String = "Ingredients"
         static let enterIngredients: String = "Enter ingredient"
         static let addIngredients: String = "+ Ingredient"
-        static let steps: String = "Steps"
+        static let note: String = "Note"
         static let uploadSuccess: String = "Upload Success"
         static let yourRecipeHasBeenUploaded: String = "Your recipe has been uploaded, you can see it on your profile."
         static let backToHome: String = "Back to Home"
+        static let missingInformation: String = "Missing Information"
+        static let myCookbooks: String = "My Cookbooks"
+        static let noRecipeYet: String = "No Recipes Yet"
+        static let tapToAddRecipe: String = "Tap the '+' button to add your first recipe!"
     }
 
     struct BottomSheetContent {
