@@ -9,18 +9,17 @@ import SwiftUI
 
 struct SearchView: View {
     @State private var search: String = ""
-    @Binding var navigationPath: [NavigationRoute]
     @State private var showingSheet = false
-
     @State private var filterCategory: RecipeCategory = .all
     @State private var sliderValue: Double = 30
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack {
             HStack {
                 Button(
                     action: {
-                        navigationPath.removeLast()
+                        dismiss()
                     },
                     label: {
                         Image(systemName: "arrow.left")

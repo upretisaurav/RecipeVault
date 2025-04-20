@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var sliderValue: Double = 30
     @State private var selectedTab: Int = 0
     @State private var showingSheet = false
+    @State var navigateToSearch: Bool = false
 
     private var gridItemWidth: CGFloat {
         let screenWidth = UIScreen.main.bounds.width
@@ -26,6 +27,7 @@ struct HomeView: View {
         VStack {
             HStack {
                 Button(action: {
+                    navigateToSearch = true
                 }) {
                     HStack {
                         Text(AppStrings.Home.search)
@@ -116,6 +118,9 @@ struct HomeView: View {
             Spacer()
         }
         .padding(.horizontal, Constants.horizontalPadding)
+        .navigationDestination(isPresented: $navigateToSearch) {
+            SearchView()
+        }
     }
 
     private var filterSheetContent: some View {
