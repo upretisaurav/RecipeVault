@@ -22,6 +22,31 @@ This project was born out of a desire to solidify the knowledge gained from the 
 * **MVVM (Model-View-ViewModel):** An architectural pattern that separates the UI (View) from the application logic (ViewModel) and data (Model).
 * **Password Hashing:** Securely storing user passwords using hashing algorithms (implementation details would be in the codebase).
 
+## Screenshots
+
+Here are some key screens of the application:
+
+<table>
+  <tr>
+    <td><img src="Recipe/images/bottomSheet.png" alt="Bottom Sheet" width="200"></td>
+    <td><img src="Recipe/images/home.png" alt="Home Screen" width="200"></td>
+    <td><img src="Recipe/images/noRecipe.png" alt="No Recipe" width="200"></td>
+    <td><img src="Recipe/images/onboarding.png" alt="Onboarding" width="200"></td>
+  </tr>
+  <tr>
+    <td><img src="Recipe/images/recipeAdded.png" alt="Recipe Added" width="200"></td>
+    <td><img src="Recipe/images/recipeBasicDetail.png" alt="Recipe Basic Detail" width="200"></td>
+    <td><img src="Recipe/images/recipeMoreDetail.png" alt="Recipe More Detail" width="200"></td>
+    <td><img src="Recipe/images/search.png" alt="Search" width="200"></td>
+  </tr>
+  <tr>
+    <td><img src="Recipe/images/signin.png" alt="Sign In" width="200"></td>
+    <td><img src="Recipe/images/signup.png" alt="Sign Up" width="200"></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
 ## Learning Journey
 
 This project represents a significant step in my iOS development journey, undertaken after completing the "SwiftUI and Advanced Programming in Swift" course on Coursera. It involved:
