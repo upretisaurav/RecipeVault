@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		441F18722D683AAB00DC1F5A /* Recipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		441F18722D683AAB00DC1F5A /* Recipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Recipe.app; path = "/Users/sauravupreti/Desktop/Clean Desktop/Swift Learning/Recipe/build/Debug-iphoneos/Recipe.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -46,16 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				441F18742D683AAB00DC1F5A /* Recipe */,
-				441F18732D683AAB00DC1F5A /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		441F18732D683AAB00DC1F5A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				441F18722D683AAB00DC1F5A /* Recipe.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -108,7 +99,7 @@
 			mainGroup = 441F18692D683AAB00DC1F5A;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 441F18732D683AAB00DC1F5A /* Products */;
+			productRefGroup = 441F18692D683AAB00DC1F5A;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
